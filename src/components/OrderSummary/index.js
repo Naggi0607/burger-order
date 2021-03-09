@@ -1,5 +1,6 @@
 import React from "react";
 import style from "./style.module.css";
+import Button from "../General/Button";
 const index = (props) => {
   return (
     <div>
@@ -12,7 +13,11 @@ const index = (props) => {
           </li>
         ))}
       </ul>
-      <p>continue</p>
+      <p>
+        <strong>Price : ${props.totalPrice}</strong>
+      </p>
+      <Button onClicked={props.onConfirm} btnType="Success" text="CONFIRM" />
+      <Button onClicked={props.onCancel} btnType="Danger" text="CANCEL" />
     </div>
   );
 };

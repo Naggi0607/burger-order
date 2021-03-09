@@ -55,6 +55,9 @@ export default class index extends Component {
   hideConfirmModal = () => {
     this.setState({ confirmOrder: false });
   };
+  continueOrder = () => {
+    console.log("continue clicked");
+  };
   render() {
     const disabledIngredient = { ...this.state.ingredients };
 
@@ -66,8 +69,11 @@ export default class index extends Component {
       <div>
         <Modal show={this.state.confirmOrder} hide={this.hideConfirmModal}>
           <OrderSummary
+            onCancel={this.hideConfirmModal}
+            onConfirm={this.continueOrder}
             ingredients={this.state.ingredients}
             ingredientNames={INGREDIENT_NAMES}
+            totalPrice={this.state.totalPrice}
           />
         </Modal>
         <Burger ingredients={this.state.ingredients} />
