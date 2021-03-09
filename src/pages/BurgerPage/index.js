@@ -23,6 +23,7 @@ export default class index extends Component {
     },
     totalPrice: 6,
     purchasing: false,
+    confirmOrder: false,
   };
 
   addIngredient = (type) => {
@@ -48,6 +49,12 @@ export default class index extends Component {
       });
     }
   };
+  showConfirmModal = () => {
+    this.setState({ confirmOrder: true });
+  };
+  hideConfirmModal = () => {
+    this.setState({ confirmOrder: false });
+  };
   render() {
     const disabledIngredient = { ...this.state.ingredients };
 
@@ -57,7 +64,7 @@ export default class index extends Component {
 
     return (
       <div>
-        <Modal>
+        <Modal show={this.state.confirmOrder} hide={this.hideConfirmModal}>
           <OrderSummary
             ingredients={this.state.ingredients}
             ingredientNames={INGREDIENT_NAMES}
@@ -71,6 +78,7 @@ export default class index extends Component {
           removeIngredient={this.removeIngredient}
           totalPrice={this.state.totalPrice}
           ingredientNames={INGREDIENT_NAMES}
+          showConfirmModal={this.showConfirmModal}
         />
       </div>
     );

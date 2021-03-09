@@ -17,7 +17,11 @@ const index = (props) => {
           removeIngredient={props.removeIngredient}
         />
       ))}
-      <button disabled={props.disabled} className={styles.OrderButton}>
+      <button
+        onClick={props.showConfirmModal}
+        disabled={props.disabled}
+        className={styles.OrderButton}
+      >
         Order
       </button>
     </div>
