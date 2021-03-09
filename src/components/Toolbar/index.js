@@ -1,10 +1,11 @@
 import React from "react";
 import style from "./style.module.css";
+import Logo from "../Logo";
 const index = () => {
   return (
     <header className={style.Toolbar}>
       <div>...</div>
-      <div>Logo</div>
+      <Logo />
       <nav>Menu</nav>
     </header>
   );
