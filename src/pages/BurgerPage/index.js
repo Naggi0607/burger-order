@@ -5,6 +5,7 @@ import Burger from "../../components/Burger";
 import BuildControls from "../../components/BuildControls";
 import Modal from "../../components/General/Modal";
 import OrderSummary from "../../components/OrderSummary";
+import axios from "../../axios_orders";
 
 const INGREDIENT_PRICE = { salad: 1, cheese: 1.5, meat: 3, bacon: 1 };
 const INGREDIENT_NAMES = {
@@ -56,8 +57,35 @@ export default class index extends Component {
     this.setState({ confirmOrder: false });
   };
   continueOrder = () => {
+    const order = {
+      ingredients: this.state.ingredients,
+      price: this.state.totalPrice,
+      address: {
+        name: "BG",
+        address: "Mascot",
+      },
+    };
+    axios.post("/orders.json", order).then((response) => {
+      alert("Order successful");
+    });
     console.log("continue clicked");
   };
+
+  // componentDidMount = () => {
+  //   axios.get("/orders.json").then((response) => {
+  //     let result = Object.entries(response.data).reverse();
+  //     result.forEach((el) => {
+  //       console.log(el[1].address.name + "===>" + el[1].price);
+  //     });
+
+  //     const lastResult = result[0][1];
+
+  //     this.setState({
+  //       ingredients: lastResult.ingredients,
+  //       totalPrice: lastResult.price,
+  //     });
+  //   });
+  // };
   render() {
     const disabledIngredient = { ...this.state.ingredients };
 
