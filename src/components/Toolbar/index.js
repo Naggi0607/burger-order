@@ -1,12 +1,17 @@
 import React from "react";
 import style from "./style.module.css";
 import Logo from "../Logo";
-const index = () => {
+import Menu from "../Menu";
+import Sidebar from "../Sidebar";
+import HamburgerMenu from "../HamburgerMenu";
+const index = (props) => {
   return (
     <header className={style.Toolbar}>
-      <div>...</div>
+      <HamburgerMenu toggleSidebar={props.toggleSidebar} />
       <Logo />
-      <nav>Menu</nav>
+      <nav className={style.HideOnMobile}>
+        <Menu />
+      </nav>
     </header>
   );
 };
