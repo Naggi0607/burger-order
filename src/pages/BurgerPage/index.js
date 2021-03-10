@@ -6,6 +6,7 @@ import BuildControls from "../../components/BuildControls";
 import Modal from "../../components/General/Modal";
 import OrderSummary from "../../components/OrderSummary";
 import axios from "../../axios_orders";
+import Spinner from "../../components/General/Spinner";
 
 const INGREDIENT_PRICE = { salad: 1, cheese: 1.5, meat: 3, bacon: 1 };
 const INGREDIENT_NAMES = {
@@ -25,6 +26,7 @@ export default class index extends Component {
     totalPrice: 6,
     purchasing: false,
     confirmOrder: false,
+    loading: false,
   };
 
   addIngredient = (type) => {
@@ -57,6 +59,7 @@ export default class index extends Component {
     this.setState({ confirmOrder: false });
   };
   continueOrder = () => {
+    this.setState({ loading: true });
     const order = {
       ingredients: this.state.ingredients,
       price: this.state.totalPrice,
@@ -65,27 +68,32 @@ export default class index extends Component {
         address: "Mascot",
       },
     };
-    axios.post("/orders.json", order).then((response) => {
-      alert("Order successful");
-    });
-    console.log("continue clicked");
+    axios
+      .post("/orders.json", order)
+      .then((response) => {
+        console.log("Order successful");
+      })
+      .finally(() => {
+        this.setState({ loading: false });
+      });
   };
 
-  // componentDidMount = () => {
-  //   axios.get("/orders.json").then((response) => {
-  //     let result = Object.entries(response.data).reverse();
-  //     result.forEach((el) => {
-  //       console.log(el[1].address.name + "===>" + el[1].price);
-  //     });
-
-  //     const lastResult = result[0][1];
-
-  //     this.setState({
-  //       ingredients: lastResult.ingredients,
-  //       totalPrice: lastResult.price,
-  //     });
-  //   });
-  // };
+  componentDidMount = () => {
+    // this.setState({
+    //   loading: true,
+    // });
+    //   axios.get("/orders.json").then((response) => {
+    //     let result = Object.entries(response.data).reverse();
+    //     result.forEach((el) => {
+    //       console.log(el[1].address.name + "===>" + el[1].price);
+    //     });
+    //     const lastResult = result[0][1];
+    //     this.setState({
+    //       ingredients: lastResult.ingredients,
+    //       totalPrice: lastResult.price,
+    //     });
+    //   });
+  };
   render() {
     const disabledIngredient = { ...this.state.ingredients };
 
@@ -96,13 +104,17 @@ export default class index extends Component {
     return (
       <div>
         <Modal show={this.state.confirmOrder} hide={this.hideConfirmModal}>
-          <OrderSummary
-            onCancel={this.hideConfirmModal}
-            onConfirm={this.continueOrder}
-            ingredients={this.state.ingredients}
-            ingredientNames={INGREDIENT_NAMES}
-            totalPrice={this.state.totalPrice}
-          />
+          {this.state.loading ? (
+            <Spinner />
+          ) : (
+            <OrderSummary
+              onCancel={this.hideConfirmModal}
+              onConfirm={this.continueOrder}
+              ingredients={this.state.ingredients}
+              ingredientNames={INGREDIENT_NAMES}
+              totalPrice={this.state.totalPrice}
+            />
+          )}
         </Modal>
         <Burger ingredients={this.state.ingredients} />
         <BuildControls
