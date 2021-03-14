@@ -5,10 +5,10 @@ const index = () => {
   return (
     <div>
       <ul className={style.Menu}>
-        <MenuItem active link="/">
-          Order
+        <MenuItem link="/orders">Orders</MenuItem>
+        <MenuItem exact link="/">
+          Login
         </MenuItem>
-        <MenuItem link="/login">Login</MenuItem>
       </ul>
     </div>
   );

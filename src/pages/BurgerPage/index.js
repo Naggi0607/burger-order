@@ -78,22 +78,6 @@ export default class index extends Component {
       });
   };
 
-  componentDidMount = () => {
-    // this.setState({
-    //   loading: true,
-    // });
-    //   axios.get("/orders.json").then((response) => {
-    //     let result = Object.entries(response.data).reverse();
-    //     result.forEach((el) => {
-    //       console.log(el[1].address.name + "===>" + el[1].price);
-    //     });
-    //     const lastResult = result[0][1];
-    //     this.setState({
-    //       ingredients: lastResult.ingredients,
-    //       totalPrice: lastResult.price,
-    //     });
-    //   });
-  };
   render() {
     const disabledIngredient = { ...this.state.ingredients };
 

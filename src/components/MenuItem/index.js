@@ -1,11 +1,16 @@
 import React from "react";
 import style from "./style.module.css";
+import { NavLink } from "react-router-dom";
 const index = (props) => {
   return (
     <li className={style.MenuItem}>
-      <a className={props.active ? style.active : null} href={props.link}>
+      <NavLink
+        exact={props.exact}
+        activeClassName={style.active}
+        to={props.link}
+      >
         {props.children}
-      </a>
+      </NavLink>
     </li>
   );
 };
