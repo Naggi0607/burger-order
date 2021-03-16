@@ -59,23 +59,15 @@ export default class index extends Component {
     this.setState({ confirmOrder: false });
   };
   continueOrder = () => {
-    this.setState({ loading: true });
-    const order = {
-      ingredients: this.state.ingredients,
-      price: this.state.totalPrice,
-      address: {
-        name: "BG",
-        address: "Mascot",
-      },
-    };
-    axios
-      .post("/orders.json", order)
-      .then((response) => {
-        console.log("Order successful");
-      })
-      .finally(() => {
-        this.setState({ loading: false });
-      });
+    const params = [];
+    for (let ingredients in this.state.ingredients) {
+      params.push(ingredients + "=" + this.state.ingredients[ingredients]);
+    }
+    params.push("price=" + this.state.totalPrice);
+    const query = params.join("&");
+    console.log(query);
+    this.props.history.push({ pathname: "/ship", search: query });
+    this.hideConfirmModal();
   };
 
   render() {

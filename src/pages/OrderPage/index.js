@@ -29,7 +29,8 @@ export default class index extends Component {
   render() {
     console.log(this.state.orders);
     return (
-      <div>
+      <div className={style.Orderpage}>
+        <h1>Your orders</h1>
         {this.state.loading ? (
           <Spinner />
         ) : (

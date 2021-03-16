@@ -5,7 +5,7 @@ const index = (props) => {
   return (
     <div>
       <h3>Your orders</h3>
-      <p>your ingredients : </p>
+      <p>ingredients : </p>
       <ul>
         {Object.keys(props.ingredients).map((el, index) => (
           <li key={index}>

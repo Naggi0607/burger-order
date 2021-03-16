@@ -7,6 +7,8 @@ import Toolbar from "../../components/Toolbar";
 import Sidebar from "../../components/Sidebar";
 import BurgerPage from "../BurgerPage";
 import OrderPage from "../OrderPage";
+import ShippingPage from "../ShippingPage";
+
 class App extends Component {
   state = { showSidebar: false };
 
@@ -27,6 +29,7 @@ class App extends Component {
           <main className={styles.Content}>
             <Switch>
               <Route path="/orders" component={OrderPage} />
+              <Route path="/ship" component={ShippingPage} />
               <Route path="/" component={BurgerPage} />
             </Switch>
           </main>
