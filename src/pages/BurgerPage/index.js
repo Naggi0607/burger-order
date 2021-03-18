@@ -7,6 +7,8 @@ import Modal from "../../components/General/Modal";
 import OrderSummary from "../../components/OrderSummary";
 import axios from "../../axios_orders";
 import Spinner from "../../components/General/Spinner";
+import { connect } from "react-redux";
+import * as actions from "../../redux/actions/burgerActions";
 
 const INGREDIENT_PRICE = { salad: 1, cheese: 1.5, meat: 3, bacon: 1 };
 const INGREDIENT_NAMES = {
@@ -15,43 +17,13 @@ const INGREDIENT_NAMES = {
   meat: "Meat",
   salad: "Salad",
 };
-export default class index extends Component {
+class index extends Component {
   state = {
-    ingredients: {
-      salad: 0,
-      cheese: 0,
-      bacon: 0,
-      meat: 0,
-    },
-    totalPrice: 6,
     purchasing: false,
     confirmOrder: false,
     loading: false,
   };
 
-  addIngredient = (type) => {
-    const newIngredient = { ...this.state.ingredients };
-    newIngredient[type]++;
-    const newPrice = this.state.totalPrice + INGREDIENT_PRICE[type];
-    this.setState({
-      purchasing: true,
-      totalPrice: newPrice,
-      ingredients: newIngredient,
-    });
-  };
-
-  removeIngredient = (type) => {
-    if (this.state.ingredients[type] > 0) {
-      const newIngredient = { ...this.state.ingredients };
-      newIngredient[type]--;
-      const newPrice = this.state.totalPrice - INGREDIENT_PRICE[type];
-      this.setState({
-        purchasing: newPrice > 6,
-        totalPrice: newPrice,
-        ingredients: newIngredient,
-      });
-    }
-  };
   showConfirmModal = () => {
     this.setState({ confirmOrder: true });
   };
@@ -60,10 +32,12 @@ export default class index extends Component {
   };
   continueOrder = () => {
     const params = [];
-    for (let ingredients in this.state.ingredients) {
-      params.push(ingredients + "=" + this.state.ingredients[ingredients]);
+    for (let ingredients in this.props.burgerIngredients) {
+      params.push(
+        ingredients + "=" + this.props.burgerIngredients[ingredients]
+      );
     }
-    params.push("price=" + this.state.totalPrice);
+    params.push("price=" + this.props.price);
     const query = params.join("&");
     console.log(query);
     this.props.history.push({ pathname: "/ship", search: query });
@@ -71,7 +45,7 @@ export default class index extends Component {
   };
 
   render() {
-    const disabledIngredient = { ...this.state.ingredients };
+    const disabledIngredient = { ...this.props.burgerIngredients };
 
     for (let key in disabledIngredient) {
       disabledIngredient[key] = disabledIngredient[key] <= 0;
@@ -86,19 +60,19 @@ export default class index extends Component {
             <OrderSummary
               onCancel={this.hideConfirmModal}
               onConfirm={this.continueOrder}
-              ingredients={this.state.ingredients}
+              ingredients={this.props.burgerIngredients}
               ingredientNames={INGREDIENT_NAMES}
-              totalPrice={this.state.totalPrice}
+              totalPrice={this.props.price}
             />
           )}
         </Modal>
-        <Burger ingredients={this.state.ingredients} />
+        <Burger ingredients={this.props.burgerIngredients} />
         <BuildControls
           disabled={!this.state.purchasing}
           disabledIngredient={disabledIngredient}
-          addIngredient={this.addIngredient}
-          removeIngredient={this.removeIngredient}
-          totalPrice={this.state.totalPrice}
+          addIngredient={this.props.addIngredient}
+          removeIngredient={this.props.removeIngredient}
+          totalPrice={this.props.price}
           ingredientNames={INGREDIENT_NAMES}
           showConfirmModal={this.showConfirmModal}
         />
@@ -106,3 +80,20 @@ export default class index extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    burgerIngredients: state.ingredients,
+    price: state.totalPrice,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addIngredient: (ingredient) => dispatch(actions.addIngredient(ingredient)),
+    removeIngredient: (ingredient) =>
+      dispatch(actions.removeIngredient(ingredient)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(index);

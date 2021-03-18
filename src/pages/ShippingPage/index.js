@@ -37,7 +37,7 @@ export default class index extends Component {
         <p style={{ fontSize: "20px" }}>
           <strong>Your orders : ${this.state.price}</strong>
         </p>
-        <Burger ingredients={this.state.ingredients} />
+        <Burger ingredients={this.props.burgerIngredients} />
         <Button onClicked={this.goBack} btnType="Danger" text="CANCEL ORDER" />
         <Button
           onClicked={this.showContactData}
@@ -47,7 +47,7 @@ export default class index extends Component {
 
         <Route path="/ship/contact">
           <ContactData
-            ingredients={this.state.ingredients}
+            ingredients={this.props.burgerIngredients}
             price={this.state.price}
           />
         </Route>

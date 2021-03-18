@@ -4,10 +4,15 @@ import "./index.css";
 import App from "./pages/App";
 import reportWebVitals from "./reportWebVitals";
 
+import { createStore } from "redux";
+import { Provider } from "react-redux";
+import burgerReducer from "./redux/reducer/burgerReducer";
+
+const store = createStore(burgerReducer);
 ReactDOM.render(
-  <React.StrictMode>
+  <Provider store={store}>
     <App />
-  </React.StrictMode>,
+  </Provider>,
   document.getElementById("root")
 );
 
