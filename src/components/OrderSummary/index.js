@@ -1,4 +1,6 @@
 import React from "react";
+import { connect } from "react-redux";
+
 import style from "./style.module.css";
 import Button from "../General/Button";
 const index = (props) => {
@@ -22,4 +24,12 @@ const index = (props) => {
   );
 };
 
-export default index;
+const mapStateToProps = (state) => {
+  return {
+    ingredients: state.ingredients,
+    totalPrice: state.totalPrice,
+    ingredientNames: state.ingredientNames,
+  };
+};
+
+export default connect(mapStateToProps)(index);

@@ -1,7 +1,15 @@
 import React from "react";
+import { connect } from "react-redux";
+import * as actions from "../../redux/actions/burgerActions";
+
 import styles from "./style.module.css";
 import BuildControl from "../BuildControl";
 const index = (props) => {
+  const disabledIngredient = { ...props.burgerIngredients };
+
+  for (let key in disabledIngredient) {
+    disabledIngredient[key] = disabledIngredient[key] <= 0;
+  }
   return (
     <div className={styles.BuildControls}>
       <p>
@@ -12,14 +20,14 @@ const index = (props) => {
           key={index}
           type={el}
           text={props.ingredientNames[el]}
-          disabled={props.disabledIngredient}
+          disabled={disabledIngredient}
           addIngredient={props.addIngredient}
           removeIngredient={props.removeIngredient}
         />
       ))}
       <button
         onClick={props.showConfirmModal}
-        disabled={props.disabled}
+        disabled={!props.purchasing}
         className={styles.OrderButton}
       >
         Order
@@ -28,4 +36,21 @@ const index = (props) => {
   );
 };
 
-export default index;
+const mapStateToProps = (state) => {
+  return {
+    burgerIngredients: state.ingredients,
+    totalPrice: state.totalPrice,
+    purchasing: state.purchasing,
+    ingredientNames: state.ingredientNames,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    addIngredient: (ingredient) => dispatch(actions.addIngredient(ingredient)),
+    removeIngredient: (ingredient) =>
+      dispatch(actions.removeIngredient(ingredient)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(index);

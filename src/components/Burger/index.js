@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./style.module.css";
-
+import { connect } from "react-redux";
 import BurgerIngredient from "../BurgerIngredient";
 
 const index = (props) => {
@@ -21,4 +21,8 @@ const index = (props) => {
   );
 };
 
-export default index;
+const mapStateToProps = (state) => {
+  return { ingredients: state.ingredients };
+};
+
+export default connect(mapStateToProps)(index);

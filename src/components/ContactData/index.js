@@ -1,9 +1,12 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+
 import style from "./style.module.css";
 import Button from "../General/Button";
 import axios from "../../axios_orders";
 import Spinner from "../General/Spinner";
-import { withRouter } from "react-router-dom";
+
 class index extends Component {
   state = {
     name: null,
@@ -66,4 +69,11 @@ class index extends Component {
   }
 }
 
-export default withRouter(index);
+const mapStateToProps = (state) => {
+  return {
+    ingredients: state.ingredients,
+    price: state.totalPrice,
+  };
+};
+
+export default connect(mapStateToProps)(withRouter(index));

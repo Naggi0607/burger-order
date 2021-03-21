@@ -1,29 +1,12 @@
 import React, { Component } from "react";
-import style from "./style.module.css";
 import { Route } from "react-router-dom";
+import { connect } from "react-redux";
+
+import style from "./style.module.css";
 import Burger from "../../components/Burger";
 import Button from "../../components/General/Button";
 import ContactData from "../../components/ContactData";
-export default class index extends Component {
-  state = {
-    ingredients: null,
-    price: 0,
-  };
-
-  componentWillMount = () => {
-    const query = new URLSearchParams(this.props.location.search);
-    const ingredients = {};
-    let price = 0;
-    for (let param of query.entries()) {
-      console.log(param[0]);
-
-      if (param[0] !== "price") ingredients[param[0]] = param[1];
-      else price = param[1];
-    }
-
-    this.setState({ ingredients, price });
-  };
-
+class index extends Component {
   goBack = () => {
     this.props.history.goBack();
   };
@@ -35,7 +18,7 @@ export default class index extends Component {
     return (
       <div className={style.ShippingPage}>
         <p style={{ fontSize: "20px" }}>
-          <strong>Your orders : ${this.state.price}</strong>
+          <strong>Your orders : ${this.props.price}</strong>
         </p>
         <Burger ingredients={this.props.burgerIngredients} />
         <Button onClicked={this.goBack} btnType="Danger" text="CANCEL ORDER" />
@@ -46,12 +29,18 @@ export default class index extends Component {
         />
 
         <Route path="/ship/contact">
-          <ContactData
-            ingredients={this.props.burgerIngredients}
-            price={this.state.price}
-          />
+          <ContactData />
         </Route>
       </div>
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    burgerIngredients: state.ingredients,
+    price: state.totalPrice,
+  };
+};
+
+export default connect(mapStateToProps)(index);

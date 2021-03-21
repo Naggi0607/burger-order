@@ -27,7 +27,6 @@ export default class index extends Component {
   };
 
   render() {
-    console.log(this.state.orders);
     return (
       <div className={style.Orderpage}>
         <h1>Your orders</h1>
