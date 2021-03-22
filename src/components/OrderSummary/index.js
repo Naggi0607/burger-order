@@ -26,9 +26,9 @@ const index = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    ingredients: state.ingredients,
-    totalPrice: state.totalPrice,
-    ingredientNames: state.ingredientNames,
+    ingredients: state.burgerReducer.ingredients,
+    totalPrice: state.burgerReducer.totalPrice,
+    ingredientNames: state.burgerReducer.ingredientNames,
   };
 };
 

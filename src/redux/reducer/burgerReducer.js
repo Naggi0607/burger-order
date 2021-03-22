@@ -16,7 +16,7 @@ const initialState = {
     salad: "Salad",
   },
 };
-const reducer = (state = initialState, action) => {
+const burgerReducer = (state = initialState, action) => {
   if (action.type === "ADD_INGREDIENT") {
     return {
       ...state,
@@ -42,4 +42,4 @@ const reducer = (state = initialState, action) => {
   return state;
 };
 
-export default reducer;
+export default burgerReducer;

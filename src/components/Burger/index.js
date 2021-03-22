@@ -22,7 +22,7 @@ const index = (props) => {
 };
 
 const mapStateToProps = (state) => {
-  return { ingredients: state.ingredients };
+  return { ingredients: state.burgerReducer.ingredients };
 };
 
 export default connect(mapStateToProps)(index);

@@ -38,8 +38,8 @@ class index extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    burgerIngredients: state.ingredients,
-    price: state.totalPrice,
+    burgerIngredients: state.burgerReducer.ingredients,
+    price: state.burgerReducer.totalPrice,
   };
 };
 

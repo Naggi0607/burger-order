@@ -4,11 +4,14 @@ import "./index.css";
 import App from "./pages/App";
 import reportWebVitals from "./reportWebVitals";
 
-import { createStore, applyMiddleware, compose } from "redux";
+import { createStore, applyMiddleware, compose, combineReducers } from "redux";
 import { Provider } from "react-redux";
+import thunk from "redux-thunk";
+
 import burgerReducer from "./redux/reducer/burgerReducer";
-import { getNodeText } from "@testing-library/dom";
-const logger = (store) => {
+import orderReducer from "./redux/reducer/orderReducer";
+
+const loggerMiddleware = (store) => {
   return (next) => {
     return (action) => {
       console.log("My logger middleware actions:", action);
@@ -20,12 +23,17 @@ const logger = (store) => {
     };
   };
 };
+const reducers = combineReducers({
+  burgerReducer,
+  orderReducer,
+});
 
+const Middlewares = [loggerMiddleware, thunk];
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(
-  burgerReducer,
-  composeEnhancers(applyMiddleware(logger))
+  reducers,
+  composeEnhancers(applyMiddleware(...Middlewares))
 );
 ReactDOM.render(
   <Provider store={store}>
