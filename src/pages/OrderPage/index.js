@@ -10,18 +10,6 @@ import * as actions from "../../redux/actions/orderActions";
 class index extends Component {
   componentDidMount = () => {
     this.props.loadOrders();
-    // this.setState({
-    //   loading: true,
-    // });
-    // axios
-    //   .get("/orders.json")
-    //   .then((response) => {
-    //     this.setState({ orders: Object.entries(response.data).reverse() });
-    //   })
-    //   .catch((err) => console.log(err))
-    //   .finally(() => {
-    //     this.setState({ loading: false });
-    //   });
   };
 
   render() {

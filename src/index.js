@@ -10,15 +10,12 @@ import thunk from "redux-thunk";
 
 import burgerReducer from "./redux/reducer/burgerReducer";
 import orderReducer from "./redux/reducer/orderReducer";
+import signupLoginReducer from "./redux/reducer/signupLoginReducer";
 
 const loggerMiddleware = (store) => {
   return (next) => {
     return (action) => {
-      console.log("My logger middleware actions:", action);
-      console.log("My logger middleware state : ", store.getState());
       const result = next(action);
-      console.log("My logger middleware result : ", store.getState());
-
       return result;
     };
   };
@@ -26,6 +23,7 @@ const loggerMiddleware = (store) => {
 const reducers = combineReducers({
   burgerReducer,
   orderReducer,
+  signupLoginReducer,
 });
 
 const Middlewares = [loggerMiddleware, thunk];
