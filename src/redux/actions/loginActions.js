@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createDispatchHook } from "react-redux";
+import * as actions from "./signupActions";
 
 export const signinUser = (email, password) => {
   return function (dispatch) {
@@ -19,11 +20,17 @@ export const signinUser = (email, password) => {
         //LocalStorage
         const token = result.data.idToken;
         const userId = result.data.localId;
+        const expiresIn = result.data.expiresIn;
+        const expireDate = new Date(new Date().getTime() + expiresIn * 1000);
+        const refreshToken = result.data.refreshToken;
 
         localStorage.setItem("token", token);
         localStorage.setItem("userId", userId);
+        localStorage.setItem("expireDate", expireDate);
+        localStorage.setItem("refreshToken", refreshToken);
 
         dispatch(signinUserSuccess(token, userId));
+        dispatch(actions.autoLogout(expiresIn * 1000));
       })
       .catch((error) => {
         dispatch(signinUserError(error));

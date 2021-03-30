@@ -16,7 +16,13 @@ export const signupUser = (email, password) => {
         data
       )
       .then((result) => {
-        dispatch(signupUserSuccess(result.data));
+        const token = result.data.idToken;
+        const userId = result.data.localId;
+
+        localStorage.setItem("token", token);
+        localStorage.setItem("userId", userId);
+
+        dispatch(signupUserSuccess(token, userId));
       })
       .catch((error) => {
         dispatch(signupUserError(error.response.data.error.message));
@@ -28,8 +34,8 @@ export const signupUserStart = () => {
   return { type: "SIGNUP_USER_START" };
 };
 
-export const signupUserSuccess = (data) => {
-  return { type: "SIGNUP_USER_SUCCESS", data };
+export const signupUserSuccess = (token, userId) => {
+  return { type: "SIGNUP_USER_SUCCESS", token, userId };
 };
 
 export const signupUserError = (error) => {
@@ -39,7 +45,17 @@ export const signupUserError = (error) => {
 export const logout = () => {
   localStorage.removeItem("token");
   localStorage.removeItem("userId");
+  localStorage.removeItem("expireDate");
+  localStorage.removeItem("refreshToken");
   return {
     type: "LOGOUT",
+  };
+};
+
+export const autoLogout = (ms) => {
+  return function (dispatch) {
+    setTimeout(() => {
+      dispatch(logout());
+    }, ms);
   };
 };

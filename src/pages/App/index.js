@@ -14,6 +14,7 @@ import Signup from "../SignupPage";
 import Logout from "../../components/Logout";
 
 import * as actions from "../../redux/actions/loginActions";
+import * as signupActions from "../../redux/actions/signupActions";
 
 class App extends Component {
   state = { showSidebar: false };
@@ -21,8 +22,21 @@ class App extends Component {
   componentDidMount = () => {
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("userId");
+    const expireDate = new Date(localStorage.getItem("expireDate"));
+    const refreshToken = localStorage.getItem("refreshToken");
 
-    token && this.props.autologin(token, userId);
+    if (token) {
+      if (expireDate > new Date()) {
+        // Token doesn't expired, auto login
+        this.props.autologin(token, userId);
+
+        // Calculation token expire time and autologout
+        this.props.augoLogout(expireDate.getTime() - new Date().getTime());
+      } else {
+        // Token expired, logout
+        this.props.logout();
+      }
+    }
   };
 
   toggleSidebar = () => {
@@ -69,6 +83,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     autologin: (token, userId) =>
       dispatch(actions.signinUserSuccess(token, userId)),
+    logout: () => dispatch(signupActions.logout()),
+    augoLogout: () => dispatch(signupActions.autoLogout()),
   };
 };
 

@@ -18,8 +18,8 @@ const signupLoginReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         error: null,
-        token: action.data.idToken,
-        userId: action.data.localId,
+        token: action.token,
+        userId: action.userId,
       };
     case "SIGNUP_USER_ERROR":
       return {
