@@ -25,7 +25,7 @@ const signupLoginReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        error: action.error,
+        error: action.error.response.data.error.message,
       };
     case "SIGNIN_USER_START":
       return {
@@ -44,7 +44,7 @@ const signupLoginReducer = (state = initialState, action) => {
       return {
         ...state,
         loginIn: false,
-        error: action.error,
+        error: action.error.response.data.error.message,
       };
     case "LOGOUT":
       return {
