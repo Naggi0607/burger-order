@@ -41,7 +41,7 @@ export class index extends Component {
           <div style={{ color: "red" }}> {this.props.error}</div>
         )}
         {this.props.saving && <Spinner />}
-        <Button text="login" btnType="Success" onClicked={this.login} />
+        <Button text="login1" btnType="Success" onClicked={this.login} />
       </div>
     );
   }
