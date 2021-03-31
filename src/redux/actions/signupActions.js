@@ -18,9 +18,14 @@ export const signupUser = (email, password) => {
       .then((result) => {
         const token = result.data.idToken;
         const userId = result.data.localId;
+        const expiresIn = result.data.expiresIn;
+        const expireDate = new Date(new Date().getTime() + expiresIn * 1000);
+        const refreshToken = result.data.refreshToken;
 
         localStorage.setItem("token", token);
         localStorage.setItem("userId", userId);
+        localStorage.setItem("expireDate", expireDate);
+        localStorage.setItem("refreshToken", refreshToken);
 
         dispatch(signupUserSuccess(token, userId));
       })
@@ -53,6 +58,7 @@ export const logout = () => {
 };
 
 export const autoLogout = (ms) => {
+  console.log("auto logout" + ms);
   return function (dispatch) {
     setTimeout(() => {
       dispatch(logout());

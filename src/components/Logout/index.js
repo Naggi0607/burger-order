@@ -1,22 +1,19 @@
-import React, { Component } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import * as actions from "../../redux/actions/signupActions";
 import { Redirect } from "react-router-dom";
 
-class index extends Component {
-  componentDidMount = () => {
-    {
-      this.props.logout();
-    }
-  };
-  render() {
-    return (
-      <div>
-        <Redirect to="/" />;
-      </div>
-    );
-  }
-}
+const Index = (props) => {
+  useEffect(() => {
+    props.logout();
+  }, []);
+
+  return (
+    <div>
+      <Redirect to="/" />;
+    </div>
+  );
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -24,4 +21,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(index);
+export default connect(null, mapDispatchToProps)(Index);

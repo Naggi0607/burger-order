@@ -9,7 +9,6 @@ export const loadOrders = () => {
       .get(`/orders.json?auth=${token}&orderBy="userId"&equalTo="${userId}"`)
       .then((response) => {
         const loadOrder = Object.entries(response.data).reverse();
-        console.log(loadOrder);
         dispatch(loadOrdersSuccess(loadOrder));
       })
       .catch((err) => {

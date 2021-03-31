@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 
 import style from "./style.module.css";
@@ -7,24 +7,22 @@ import Order from "../../components/Order";
 
 import * as actions from "../../redux/actions/orderActions";
 
-class index extends Component {
-  componentDidMount = () => {
-    this.props.loadOrders();
-  };
+const Index = (props) => {
+  useEffect(() => {
+    props.loadOrders();
+  }, []);
 
-  render() {
-    return (
-      <div className={style.Orderpage}>
-        <h1>Your orders</h1>
-        {this.props.loading ? (
-          <Spinner />
-        ) : (
-          this.props.orders.map((el) => <Order key={el[0]} Order={el[1]} />)
-        )}
-      </div>
-    );
-  }
-}
+  return (
+    <div className={style.Orderpage}>
+      <h1>Your orders</h1>
+      {props.loading ? (
+        <Spinner />
+      ) : (
+        props.orders.map((el) => <Order key={el[0]} Order={el[1]} />)
+      )}
+    </div>
+  );
+};
 
 const mapStateToProps = (state) => {
   return {
@@ -38,4 +36,4 @@ const mapDispatchToProps = (dispatch) => {
     loadOrders: () => dispatch(actions.loadOrders()),
   };
 };
-export default connect(mapStateToProps, mapDispatchToProps)(index);
+export default connect(mapStateToProps, mapDispatchToProps)(Index);

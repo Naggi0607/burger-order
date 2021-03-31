@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
@@ -16,64 +16,58 @@ import Logout from "../../components/Logout";
 import * as actions from "../../redux/actions/loginActions";
 import * as signupActions from "../../redux/actions/signupActions";
 
-class App extends Component {
-  state = { showSidebar: false };
+const App = (props) => {
+  const [showSidebar, setShowSidebar] = useState(false);
 
-  componentDidMount = () => {
+  useEffect(() => {
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("userId");
     const expireDate = new Date(localStorage.getItem("expireDate"));
-    const refreshToken = localStorage.getItem("refreshToken");
 
     if (token) {
       if (expireDate > new Date()) {
         // Token doesn't expired, auto login
-        this.props.autologin(token, userId);
+        props.autologin(token, userId);
 
         // Calculation token expire time and autologout
-        this.props.augoLogout(expireDate.getTime() - new Date().getTime());
+
+        const diff = expireDate.getTime() - new Date().getTime();
+        props.augoLogout(diff);
       } else {
         // Token expired, logout
-        this.props.logout();
+        props.logout();
       }
     }
+  }, []);
+  const toggleSidebar = (prevState) => {
+    setShowSidebar(!prevState.showSidebar);
   };
 
-  toggleSidebar = () => {
-    this.setState((prevState) => {
-      return { showSidebar: !prevState.showSidebar };
-    });
-  };
-  render() {
-    return (
-      <BrowserRouter>
-        <div className={styles.App}>
-          <Toolbar toggleSidebar={this.toggleSidebar} />
-          <Sidebar
-            showSidebar={this.state.showSidebar}
-            toggleSidebar={this.toggleSidebar}
-          />
-          <main className={styles.Content}>
-            {this.props.userId ? (
-              <Switch>
-                <Route path="/logout" component={Logout} />
-                <Route path="/orders" component={OrderPage} />
-                <Route path="/ship" component={ShippingPage} />
-                <Route path="/" component={BurgerPage} />
-              </Switch>
-            ) : (
-              <Switch>
-                <Route path="/login" component={LoginPage} />
-                <Route path="/signup" component={Signup} />
-                <Redirect to="/login" />
-              </Switch>
-            )}
-          </main>
-        </div>
-      </BrowserRouter>
-    );
-  }
-}
+  return (
+    <BrowserRouter>
+      <div className={styles.App}>
+        <Toolbar toggleSidebar={toggleSidebar} />
+        <Sidebar showSidebar={showSidebar} toggleSidebar={toggleSidebar} />
+        <main className={styles.Content}>
+          {props.userId ? (
+            <Switch>
+              <Route path="/logout" component={Logout} />
+              <Route path="/orders" component={OrderPage} />
+              <Route path="/ship" component={ShippingPage} />
+              <Route path="/" component={BurgerPage} />
+            </Switch>
+          ) : (
+            <Switch>
+              <Route path="/login" component={LoginPage} />
+              <Route path="/signup" component={Signup} />
+              <Redirect to="/login" />
+            </Switch>
+          )}
+        </main>
+      </div>
+    </BrowserRouter>
+  );
+};
 
 const mapStateToProps = (state) => {
   return { userId: state.signupLoginReducer.userId };
@@ -84,7 +78,7 @@ const mapDispatchToProps = (dispatch) => {
     autologin: (token, userId) =>
       dispatch(actions.signinUserSuccess(token, userId)),
     logout: () => dispatch(signupActions.logout()),
-    augoLogout: () => dispatch(signupActions.autoLogout()),
+    augoLogout: (ms) => dispatch(signupActions.autoLogout(ms)),
   };
 };
 
