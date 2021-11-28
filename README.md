@@ -1,12 +1,12 @@
-# Used techstacks
+# Getting Started with Create React App
+
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## Used techstacks
 - Firebase
 - React 17.0.2
   - Axios
   - Redux
-
-## Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
 
