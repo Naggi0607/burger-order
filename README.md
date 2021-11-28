@@ -1,8 +1,8 @@
 # Used techstacks
-Firebase
-React
-Axios
-Redux
+- Firebase
+- React 17.0.2
+  - Axios
+  - Redux
 
 ## Getting Started with Create React App
 
